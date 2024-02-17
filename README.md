@@ -117,51 +117,36 @@ http://localhost:8082/api/comments/news-id/1
 Response:
 
 ```json
-{
-  "content": [
-    {
-      "id": 1,
-      "time": "2024-02-15T10:08:25.382",
-      "text": "text",
-      "username": "name",
-      "newsId": 1
-    }
-  ],
-  "pageable": {
-    "pageNumber": 0,
-    "pageSize": 15,
-    "sort": {
-      "empty": true,
-      "unsorted": true,
-      "sorted": false
-    },
-    "offset": 0,
-    "paged": true,
-    "unpaged": false
+[
+  {
+    "id": 1,
+    "time": "2024-02-17T21:36:13.006",
+    "text": "text",
+    "username": "name",
+    "newsId": 1
   },
-  "totalPages": 1,
-  "totalElements": 1,
-  "last": true,
-  "size": 15,
-  "number": 0,
-  "sort": {
-    "empty": true,
-    "unsorted": true,
-    "sorted": false
+  {
+    "id": 2,
+    "time": "2024-02-17T21:36:14.023",
+    "text": "text",
+    "username": "name",
+    "newsId": 1
   },
-  "numberOfElements": 1,
-  "first": true,
-  "empty": false
-}
-```
-
-Если список пуст:
-
-```json
-{
-  "errorMessage": "List is empty!",
-  "errorCode": 404
-}
+  {
+    "id": 3,
+    "time": "2024-02-17T21:36:14.817",
+    "text": "text",
+    "username": "name",
+    "newsId": 1
+  },
+  {
+    "id": 4,
+    "time": "2024-02-17T21:36:15.455",
+    "text": "text",
+    "username": "name",
+    "newsId": 1
+  }
+]
 ```
 
 #### GET запрос searchByText(Integer offset, Integer limit, String fragment)

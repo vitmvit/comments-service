@@ -11,8 +11,8 @@ import ru.clevertec.news.dto.CommentDto;
 import ru.clevertec.news.exception.CacheNotFoundException;
 import ru.clevertec.news.service.proxy.CommentProxyService;
 
-import static ru.clevertec.news.constant.Constant.LFU;
-import static ru.clevertec.news.constant.Constant.LRU;
+import static ru.clevertec.news.constant.Variable.LFU;
+import static ru.clevertec.news.constant.Variable.LRU;
 
 /**
  * Класс, который отвечает за конфигурацию кэша.
@@ -79,7 +79,7 @@ public class CacheConfig {
      * @return CommentProxyService - сервис прокси для работы с HouseDto.
      */
     @Bean
-    public CommentProxyService getHouseProxyService() {
+    public CommentProxyService getCommentProxyService() {
         return new CommentProxyService(cache());
     }
 }

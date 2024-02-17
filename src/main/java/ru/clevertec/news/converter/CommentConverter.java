@@ -3,9 +3,9 @@ package ru.clevertec.news.converter;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
-import ru.clevertec.news.dto.CommentCreateDto;
 import ru.clevertec.news.dto.CommentDto;
-import ru.clevertec.news.dto.CommentUpdateDto;
+import ru.clevertec.news.dto.create.CommentCreateDto;
+import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.model.Comment;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)

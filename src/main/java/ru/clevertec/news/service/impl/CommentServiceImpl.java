@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.clevertec.news.converter.CommentConverter;
-import ru.clevertec.news.dto.CommentCreateDto;
 import ru.clevertec.news.dto.CommentDto;
-import ru.clevertec.news.dto.CommentUpdateDto;
+import ru.clevertec.news.dto.create.CommentCreateDto;
+import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.exception.EmptyListException;
 import ru.clevertec.news.exception.EntityNotFoundException;
 import ru.clevertec.news.model.Comment;
@@ -46,7 +46,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Page<CommentDto> findByNewsId(Integer offset, Integer limit, Long id) {
         var commentPage = commentRepository.findByNewsId(PageRequest.of(offset, limit), id);
-        commentPage.stream().findAny().orElseThrow(EmptyListException::new);
         return commentPage.map(commentConverter::convert);
     }
 

@@ -1,9 +1,9 @@
 package ru.clevertec.news.util;
 
 import lombok.Builder;
-import ru.clevertec.news.dto.CommentCreateDto;
 import ru.clevertec.news.dto.CommentDto;
-import ru.clevertec.news.dto.CommentUpdateDto;
+import ru.clevertec.news.dto.create.CommentCreateDto;
+import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.model.Comment;
 
 import java.time.LocalDateTime;

@@ -1,9 +1,9 @@
 package ru.clevertec.news.service;
 
 import org.springframework.data.domain.Page;
-import ru.clevertec.news.dto.CommentCreateDto;
 import ru.clevertec.news.dto.CommentDto;
-import ru.clevertec.news.dto.CommentUpdateDto;
+import ru.clevertec.news.dto.create.CommentCreateDto;
+import ru.clevertec.news.dto.update.CommentUpdateDto;
 
 public interface CommentService {
 
