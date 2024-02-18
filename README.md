@@ -2,7 +2,9 @@
 
 Данный микросервис работает с комментариями
 
-Реалиазация
+## Swagger
+
+http://localhost:8082/api/doc/swagger-ui/index.html#/
 
 ## Реализация:
 

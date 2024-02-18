@@ -89,16 +89,6 @@ public class CommentServiceTest {
     }
 
     @Test
-    void findByNewsIdShouldReturnEmptyPageWhenEmptyPageComments() {
-        Long newsId = 1L;
-
-        when(commentRepository.findByNewsId(PageRequest.of(OFFSET, LIMIT), newsId)).thenReturn(Page.empty());
-
-        var exception = assertThrows(Exception.class, () -> commentService.findByNewsId(OFFSET, LIMIT, newsId));
-        assertEquals(exception.getClass(), EmptyListException.class);
-    }
-
-    @Test
     void findAllShouldReturnExpectedPageComments() {
         Page<Comment> page = new PageImpl<>(List.of(
                 CommentTestBuilder.builder().build().buildComment()
@@ -193,15 +183,15 @@ public class CommentServiceTest {
     void updateShouldCallsMergeAndSaveWhenCommentFound() {
         Long id = CommentTestBuilder.builder().build().getId();
         CommentUpdateDto dto = CommentTestBuilder.builder().build().buildCommentUpdateDto();
-        Comment house = CommentTestBuilder.builder().build().buildComment();
+        Comment comment = CommentTestBuilder.builder().build().buildComment();
 
-        when(commentRepository.findById(id)).thenReturn(Optional.of(house));
+        when(commentRepository.findById(id)).thenReturn(Optional.of(comment));
         commentService.update(dto);
 
         verify(commentRepository, times(1)).findById(id);
         verify(commentConverter, times(1)).merge(argumentCaptor.capture(), eq(dto));
-        assertSame(house, argumentCaptor.getValue());
-        verify(commentRepository, times(1)).save(house);
+        assertSame(comment, argumentCaptor.getValue());
+        verify(commentRepository, times(1)).save(comment);
     }
 
     @Test

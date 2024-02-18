@@ -11,4 +11,3 @@ spring:
       ddl-auto: create
   liquibase:
     enabled: false
-    change-log: changelog-master.xml
