@@ -33,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
      * @return информация о комментарии
      * @throws EntityNotFoundException если комментарий не найден
      */
+//    @Cacheable(value = "comment", key = "'comment_' + #id")
     @Override
     public CommentDto findById(Long id) {
         return commentConverter.convert(commentRepository.findById(id).orElseThrow(EntityNotFoundException::new));
@@ -104,6 +105,8 @@ public class CommentServiceImpl implements CommentService {
      * @param dto данные для создания комментария
      * @return созданный комментарий
      */
+
+//    @CacheEvict(value = "comment", key = "#dto.username")
     @Override
     public CommentDto create(CommentCreateDto dto) {
         var comment = commentConverter.convert(dto);
@@ -117,6 +120,7 @@ public class CommentServiceImpl implements CommentService {
      * @return обновленный комментарий
      * @throws EntityNotFoundException если комментарий не найден
      */
+//    @CachePut(cacheNames = "comment", key = "#dto.id")
     @Override
     public CommentDto update(CommentUpdateDto dto) {
         var comment = commentRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
@@ -129,6 +133,7 @@ public class CommentServiceImpl implements CommentService {
      *
      * @param id комментария
      */
+//    @CacheEvict(cacheNames = "comment", key = "#id", beforeInvocation = true)
     @Override
     public void delete(Long id) {
         commentRepository.deleteById(id);
