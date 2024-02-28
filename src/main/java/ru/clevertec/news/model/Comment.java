@@ -10,6 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * Модель комментария
+ */
 @Entity
 @Getter
 @Setter

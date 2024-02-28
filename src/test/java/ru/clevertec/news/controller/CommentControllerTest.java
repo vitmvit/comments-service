@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.clevertec.news.config.PostgresSqlContainerInitializer;
+import ru.clevertec.news.dto.create.CommentCreateDto;
 import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.exception.EmptyListException;
 import ru.clevertec.news.exception.EntityNotFoundException;
@@ -129,15 +130,15 @@ public class CommentControllerTest extends PostgresSqlContainerInitializer {
                 .andExpect(MvcResult::getResolvedException).getClass().equals(EmptyListException.class);
     }
 
-//    @Test
-//    public void createShouldReturnCreatedCommentAndStatus201() throws Exception {
-//        CommentCreateDto commentCreateDto = CommentTestBuilder.builder().build().buildCommentCreateDto();
-    // TODO: 17.02.2024 пересмотреть генерицию id на модели
-//        mockMvc.perform(post("/api/comments")
-//                        .content(objectMapper.writeValueAsString(commentCreateDto))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated());
-//    }
+    @Test
+    public void createShouldReturnCreatedCommentAndStatus201() throws Exception {
+        CommentCreateDto commentCreateDto = CommentTestBuilder.builder().build().buildCommentCreateDto();
+
+        mockMvc.perform(post("/api/comments")
+                        .content(objectMapper.writeValueAsString(commentCreateDto))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+    }
 
     @Test
     public void updateShouldReturnUpdatedCommentAndStatus201() throws Exception {

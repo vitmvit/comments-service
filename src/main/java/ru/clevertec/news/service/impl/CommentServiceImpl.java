@@ -15,6 +15,9 @@ import ru.clevertec.news.model.Comment;
 import ru.clevertec.news.repository.CommentRepository;
 import ru.clevertec.news.service.CommentService;
 
+/**
+ * Реализация сервисного слоя для работы с комментариями.
+ */
 @Service
 @Transactional
 @AllArgsConstructor
@@ -80,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * Возвращает список комментариев, найденных по фрагменту имени пользователя.
+     * Возвращает страницу комментариев, найденных по фрагменту имени пользователя.
      *
      * @param offset   смещение страницы
      * @param limit    лимит элементов на странице

@@ -6,3 +6,5 @@ VALUES (1, 1, '2024-02-15 10:08:25.382904', 'text', 'nameOne'),
        (5, 1, '2024-02-15 12:31:38.069381', 'text', 'nameFive'),
        (6, 1, '2024-02-15 12:32:29.827384', 'text', 'nameSix'),
        (7, 1, '2024-02-15 12:33:50.833255', 'text', 'nameSeven');
+
+ALTER TABLE "comment" DROP CONSTRAINT comment_pkey;

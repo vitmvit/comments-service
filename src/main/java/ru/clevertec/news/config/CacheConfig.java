@@ -74,9 +74,9 @@ public class CacheConfig {
     }
 
     /**
-     * Возвращает сервис прокси для работы с HouseDto.
+     * Возвращает сервис прокси для работы с CommentDto.
      *
-     * @return CommentProxyService - сервис прокси для работы с HouseDto.
+     * @return CommentProxyService - сервис прокси для работы с CommentDto.
      */
     @Bean
     public CommentProxyService getCommentProxyService() {
