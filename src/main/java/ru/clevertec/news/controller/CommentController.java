@@ -1,6 +1,8 @@
 package ru.clevertec.news.controller;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +28,15 @@ import static ru.clevertec.news.constant.Constant.OFFSET_DEFAULT;
 public class CommentController {
 
     private final CommentService commentService;
-
     private final AuthClient authClient;
+    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     /**
      * Получение списка всех комментариев с пагинацией
      *
      * @param offset смещение (начальный индекс комментариев)
      * @param limit  количество комментариев на странице
-     * @return объект ResponseEntity со списком комментариев типа Page<CommentDto> и статусом OK
+     * @return объект ResponseEntity со списком комментариев типа Page CommentDto и статусом OK
      */
     @GetMapping
     public ResponseEntity<Page<CommentDto>> getAll(@RequestParam(value = "offset", defaultValue = OFFSET_DEFAULT) Integer offset,
@@ -63,7 +65,7 @@ public class CommentController {
      * @param offset смещение (начальный индекс комментариев)
      * @param limit  количество комментариев на странице
      * @param id     идентификатор новости
-     * @return объект ResponseEntity со списком комментариев для новости типа Page<CommentDto> и статусом OK
+     * @return объект ResponseEntity со списком комментариев для новости типа Page CommentDto и статусом OK
      */
     @GetMapping("news-id/{id}")
     public ResponseEntity<Page<CommentDto>> getByNewsId(@RequestParam(value = "offset", defaultValue = OFFSET_DEFAULT) Integer offset,
@@ -80,7 +82,7 @@ public class CommentController {
      * @param offset   смещение (начальный индекс комментариев)
      * @param limit    количество комментариев на странице
      * @param fragment текстовый фрагмент для поиска
-     * @return объект ResponseEntity со списком найденных комментариев типа Page<CommentDto> и статусом OK
+     * @return объект ResponseEntity со списком найденных комментариев типа Page CommentDto и статусом OK
      */
     @GetMapping("/search/text/{text}")
     public ResponseEntity<Page<CommentDto>> searchByText(@RequestParam(value = "offset", defaultValue = OFFSET_DEFAULT) Integer offset,
@@ -97,7 +99,7 @@ public class CommentController {
      * @param offset   смещение (начальный индекс комментариев)
      * @param limit    количество комментариев на странице
      * @param fragment фрагмент имени пользователя для поиска
-     * @return объект ResponseEntity со списком найденных комментариев типа Page<CommentDto> и статусом OK
+     * @return объект ResponseEntity со списком найденных комментариев типа Page CommentDto и статусом OK
      */
     @GetMapping("/search/username/{username}")
     public ResponseEntity<Page<CommentDto>> searchByUsername(@RequestParam(value = "offset", defaultValue = OFFSET_DEFAULT) Integer offset,
@@ -124,6 +126,7 @@ public class CommentController {
                     .status(HttpStatus.CREATED)
                     .body(commentService.create(commentCreateDto));
         }
+        logger.error("CommentService:No access error");
         throw new NoAccessError();
     }
 
@@ -143,6 +146,7 @@ public class CommentController {
                     .status(HttpStatus.OK)
                     .body(commentService.update(commentUpdateDto));
         }
+        logger.error("CommentService:No access error");
         throw new NoAccessError();
     }
 
@@ -162,6 +166,7 @@ public class CommentController {
             commentService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
+        logger.error("CommentService:No access error");
         throw new NoAccessError();
     }
 }

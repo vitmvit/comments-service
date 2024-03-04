@@ -1,10 +1,6 @@
 server:
   port: 8083
 
-cache:
-  algorithm: lru
-  capacity: 15
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -18,12 +14,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#  cache:
-#    type: redis
-#    host: localhost
-#    port: 6379
-#    redis:
-#      time-to-live: 60000
+  logging:
+    level:
+      org.springframework.web: DEBUG
+      guru.springframework.controllers: DEBUG
+      org.hibernate: DEBUG
 
 springdoc:
   swagger-ui:

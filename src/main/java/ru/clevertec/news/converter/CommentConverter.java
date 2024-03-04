@@ -6,7 +6,7 @@ import org.mapstruct.ReportingPolicy;
 import ru.clevertec.news.dto.CommentDto;
 import ru.clevertec.news.dto.create.CommentCreateDto;
 import ru.clevertec.news.dto.update.CommentUpdateDto;
-import ru.clevertec.news.model.Comment;
+import ru.clevertec.news.model.entity.Comment;
 
 /**
  * Конвертер для преобразования моделей и DTO комментариев

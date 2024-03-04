@@ -12,17 +12,26 @@ repositories {
 }
 
 ext {
+    logbackVersion = '1.5.0'
+    slf4jVersion = '2.0.12'
+    redisVersion = '3.2.1'
+    jedisVersion = '5.1.1'
     swaggerVersion = '2.3.0'
     springFeignVersion = '4.1.0'
     starterVersion = '1.0'
     springVersion = '3.2.1'
     swaggerVersion = '2.3.0'
     mapstructVersion = '1.4.1.Final'
+    wireMockVersion = '3.0.1'
     postgreVersion = '42.6.0'
     testcontainersVersion = '1.19.4'
 }
 
 dependencies {
+    implementation "redis.clients:jedis:${jedisVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis:${redisVersion}"
+    implementation "ch.qos.logback:logback-core:${logbackVersion}"
+    implementation "org.slf4j:slf4j-api:${logbackVersion}"
     implementation "org.springframework.boot:spring-boot-starter-data-redis:${springVersion}"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${swaggerVersion}"
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign:${springFeignVersion}"
@@ -38,6 +47,8 @@ dependencies {
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
+    testImplementation "com.github.tomakehurst:wiremock-standalone:${wireMockVersion}"
+    testImplementation 'ch.qos.logback:logback-classic:1.5.0'
     testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springVersion}"

@@ -1,13 +1,14 @@
-cache:
-  algorithm: lfu
-  capacity: 15
-
 spring:
+  application:
+    name: comments-service
   datasource:
     username: test
     password: test
   jpa:
     hibernate:
       ddl-auto: create
-  liquibase:
-    enabled: false
+
+feign:
+  auth-service:
+    value: authService
+    url: http://localhost:9998/api/auth

@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.clevertec.news.model.Comment;
+import ru.clevertec.news.model.entity.Comment;
 
 /**
  * Репозиторий для работы с комментариями новостей
@@ -17,7 +17,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      *
      * @param pageable объект Pageable с информацией о пагинации
      * @param fragment текстовый фрагмент для поиска
-     * @return объект Page<Comment> со списком найденных комментариев
+     * @return объект Page Comment со списком найденных комментариев
      */
     Page<Comment> findByTextContaining(Pageable pageable, String fragment);
 
@@ -26,7 +26,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      *
      * @param pageable объект Pageable с информацией о пагинации
      * @param fragment фрагмент имени пользователя для поиска
-     * @return объект Page<Comment> со списком найденных комментариев
+     * @return объект Page Comment со списком найденных комментариев
      */
     Page<Comment> findByUsernameContaining(Pageable pageable, String fragment);
 
@@ -35,7 +35,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      *
      * @param pageable объект Pageable с информацией о пагинации
      * @param id       идентификатор новости
-     * @return объект Page<Comment> со списком найденных комментариев
+     * @return объект Page Comment со списком найденных комментариев
      */
     Page<Comment> findByNewsId(Pageable pageable, Long id);
 }

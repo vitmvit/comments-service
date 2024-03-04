@@ -2,6 +2,10 @@ package ru.clevertec.news.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -11,7 +15,7 @@ import ru.clevertec.news.dto.create.CommentCreateDto;
 import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.exception.EmptyListException;
 import ru.clevertec.news.exception.EntityNotFoundException;
-import ru.clevertec.news.model.Comment;
+import ru.clevertec.news.model.entity.Comment;
 import ru.clevertec.news.repository.CommentRepository;
 import ru.clevertec.news.service.CommentService;
 
@@ -25,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentConverter commentConverter;
+    private static final Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
 
     /**
      * Возвращает информацию о комментарии по заданному id.
@@ -33,9 +38,11 @@ public class CommentServiceImpl implements CommentService {
      * @return информация о комментарии
      * @throws EntityNotFoundException если комментарий не найден
      */
-//    @Cacheable(value = "comment", key = "'comment_' + #id")
+    @Cacheable(value = "comment", key = "#id")
     @Override
     public CommentDto findById(Long id) {
+        logger.info("CommentService: find comment by id: " + id);
+
         return commentConverter.convert(commentRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
@@ -49,6 +56,8 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Page<CommentDto> findByNewsId(Integer offset, Integer limit, Long id) {
+        logger.info("CommentService: find comment by news id: " + id);
+
         var commentPage = commentRepository.findByNewsId(PageRequest.of(offset, limit), id);
         return commentPage.map(commentConverter::convert);
     }
@@ -62,6 +71,8 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Page<CommentDto> findAll(Integer offset, Integer limit) {
+        logger.info("CommentService: find all comments");
+
         Page<Comment> commentPage = commentRepository.findAll(PageRequest.of(offset, limit));
         commentPage.stream().findAny().orElseThrow(EmptyListException::new);
         return commentPage.map(commentConverter::convert);
@@ -78,6 +89,8 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Page<CommentDto> searchByText(Integer offset, Integer limit, String fragment) {
+        logger.info("CommentService: search comment by text fragment: " + fragment);
+
         var commentPage = commentRepository.findByTextContaining(PageRequest.of(offset, limit), fragment);
         commentPage.stream().findAny().orElseThrow(EmptyListException::new);
         return commentPage.map(commentConverter::convert);
@@ -94,6 +107,8 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Page<CommentDto> searchByUsername(Integer offset, Integer limit, String fragment) {
+        logger.info("CommentService: search comment by username fragment: " + fragment);
+
         var commentPage = commentRepository.findByUsernameContaining(PageRequest.of(offset, limit), fragment);
         commentPage.stream().findAny().orElseThrow(EmptyListException::new);
         return commentPage.map(commentConverter::convert);
@@ -105,10 +120,11 @@ public class CommentServiceImpl implements CommentService {
      * @param dto данные для создания комментария
      * @return созданный комментарий
      */
-
-//    @CacheEvict(value = "comment", key = "#dto.username")
+    @CacheEvict(value = "comments", key = "#dto.username")
     @Override
     public CommentDto create(CommentCreateDto dto) {
+        logger.info("CommentService: create comment: " + dto);
+
         var comment = commentConverter.convert(dto);
         return commentConverter.convert(commentRepository.save(comment));
     }
@@ -120,9 +136,11 @@ public class CommentServiceImpl implements CommentService {
      * @return обновленный комментарий
      * @throws EntityNotFoundException если комментарий не найден
      */
-//    @CachePut(cacheNames = "comment", key = "#dto.id")
+    @CacheEvict(value = "comments", key = "#dto.id")
     @Override
     public CommentDto update(CommentUpdateDto dto) {
+        logger.info("CommentService: update comment: " + dto);
+
         var comment = commentRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
         commentConverter.merge(comment, dto);
         return commentConverter.convert(commentRepository.save(comment));
@@ -133,9 +151,11 @@ public class CommentServiceImpl implements CommentService {
      *
      * @param id комментария
      */
-//    @CacheEvict(cacheNames = "comment", key = "#id", beforeInvocation = true)
+    @CacheEvict(value = "comments", allEntries = true)
     @Override
     public void delete(Long id) {
+        logger.info("CommentService: delete comment by id: " + id);
+
         commentRepository.deleteById(id);
     }
 }

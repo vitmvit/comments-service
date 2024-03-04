@@ -1,4 +1,4 @@
-package ru.clevertec.news.model;
+package ru.clevertec.news.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

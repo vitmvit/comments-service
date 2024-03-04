@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -13,9 +14,11 @@ import ru.clevertec.news.dto.create.CommentCreateDto;
 import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.exception.EmptyListException;
 import ru.clevertec.news.exception.EntityNotFoundException;
+import ru.clevertec.news.feign.AuthClient;
 import ru.clevertec.news.service.CommentService;
 import ru.clevertec.news.util.CommentTestBuilder;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,7 +26,7 @@ import static ru.clevertec.news.constant.Constant.LIMIT;
 import static ru.clevertec.news.constant.Constant.OFFSET;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class CommentControllerTest extends PostgresSqlContainerInitializer {
 
     @Autowired
@@ -34,6 +37,9 @@ public class CommentControllerTest extends PostgresSqlContainerInitializer {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private AuthClient authClient;
 
     @Test
     public void getByIdShouldReturnExpectedCommentDtoAndStatus200() throws Exception {
@@ -133,8 +139,12 @@ public class CommentControllerTest extends PostgresSqlContainerInitializer {
     @Test
     public void createShouldReturnCreatedCommentAndStatus201() throws Exception {
         CommentCreateDto commentCreateDto = CommentTestBuilder.builder().build().buildCommentCreateDto();
+        String token = CommentTestBuilder.builder().build().getToken();
+
+        when(authClient.check(token.replace("Bearer ", ""), null, commentCreateDto.getUsername())).thenReturn(true);
 
         mockMvc.perform(post("/api/comments")
+                        .header("Authorization", token)
                         .content(objectMapper.writeValueAsString(commentCreateDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
@@ -143,10 +153,14 @@ public class CommentControllerTest extends PostgresSqlContainerInitializer {
     @Test
     public void updateShouldReturnUpdatedCommentAndStatus201() throws Exception {
         CommentUpdateDto commentUpdateDto = CommentTestBuilder.builder().build().buildCommentUpdateDto();
+        String token = CommentTestBuilder.builder().build().getToken();
+
+        when(authClient.check(token.replace("Bearer ", ""), null, commentUpdateDto.getUsername())).thenReturn(true);
 
         var expected = commentService.update(commentUpdateDto);
 
         mockMvc.perform(put("/api/comments")
+                        .header("Authorization", token)
                         .content(objectMapper.writeValueAsString(commentUpdateDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -157,8 +171,12 @@ public class CommentControllerTest extends PostgresSqlContainerInitializer {
     public void updateShouldReturnExceptionAndStatus404() throws Exception {
         CommentUpdateDto commentUpdateDto = CommentTestBuilder.builder().build().buildCommentUpdateDto();
         commentUpdateDto.setId(100L);
+        String token = CommentTestBuilder.builder().build().getToken();
+
+        when(authClient.check(token.replace("Bearer ", ""), null, commentUpdateDto.getUsername())).thenReturn(true);
 
         mockMvc.perform(put("/api/comments")
+                        .header("Authorization", token)
                         .content(objectMapper.writeValueAsString(commentUpdateDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -168,10 +186,13 @@ public class CommentControllerTest extends PostgresSqlContainerInitializer {
     @Test
     public void deleteShouldReturnStatus204() throws Exception {
         Long id = 2L;
+        Long userId = 2L;
+        String token = CommentTestBuilder.builder().build().getToken();
 
-        commentService.delete(id);
+        when(authClient.check(token.replace("Bearer ", ""), userId, null)).thenReturn(true);
 
-        mockMvc.perform(delete("/api/comments/" + id))
+        mockMvc.perform(delete("/api/comments/" + id + "/" + userId)
+                        .header("Authorization", token))
                 .andExpect(status().isNoContent());
     }
 }
