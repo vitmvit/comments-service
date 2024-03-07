@@ -1,30 +1,3 @@
 spring:
-  application:
-    name: comments-service
   profiles:
-    active: docker
-  redis:
-    port: 6379
-    host: localhost
-    cluster:
-      enabled: true
-  logging:
-    level:
-      org.springframework.web: INFO
-      guru.springframework.controllers: INFO
-      org.hibernate: INFO
-
-cache:
-  algorithm: lru
-  capacity: 15
-
-starter:
-  logging:
-    enabled: true
-  handler:
-    enabled: true
-
-feign:
-  auth-service:
-    value: authService
-    url: http://localhost:8081/api/auth
+    active: dev

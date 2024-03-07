@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.clevertec.news.converter.CommentConverter;
+import ru.clevertec.news.dto.CommentDto;
 import ru.clevertec.news.dto.create.CommentCreateDto;
 import ru.clevertec.news.dto.update.CommentUpdateDto;
 import ru.clevertec.news.exception.EmptyListException;
@@ -46,24 +47,24 @@ public class CommentServiceTest {
     private ArgumentCaptor<Comment> argumentCaptor;
 
 
-//    @Test
-//    void findByIdShouldReturnExpectedCommentWhenFound() {
-//        Comment expected = CommentTestBuilder.builder().build().buildComment();
-//        CommentDto commentDto = CommentTestBuilder.builder().build().buildCommentDto();
-//        Long id = expected.getId();
-//
-//        when(commentRepository.findById(id)).thenReturn(Optional.of(expected));
-//        when(commentConverter.convert(expected)).thenReturn(commentDto);
-//
-//        CommentDto actual = commentService.findById(id);
-//
-//        assertThat(actual)
-//                .hasFieldOrPropertyWithValue(Comment.Fields.id, expected.getId())
-//                .hasFieldOrPropertyWithValue(Comment.Fields.newsId, expected.getNewsId())
-//                .hasFieldOrPropertyWithValue(Comment.Fields.username, expected.getUsername())
-//                .hasFieldOrPropertyWithValue(Comment.Fields.text, expected.getText())
-//                .hasFieldOrPropertyWithValue(Comment.Fields.time, expected.getTime());
-//    }
+    @Test
+    void findByIdShouldReturnExpectedCommentWhenFound() {
+        Comment expected = CommentTestBuilder.builder().build().buildComment();
+        CommentDto commentDto = CommentTestBuilder.builder().build().buildCommentDto();
+        Long id = expected.getId();
+
+        when(commentRepository.findById(id)).thenReturn(Optional.of(expected));
+        when(commentConverter.convert(expected)).thenReturn(commentDto);
+
+        CommentDto actual = commentService.findById(id);
+
+        assertThat(actual)
+                .hasFieldOrPropertyWithValue(Comment.Fields.id, expected.getId())
+                .hasFieldOrPropertyWithValue(Comment.Fields.newsId, expected.getNewsId())
+                .hasFieldOrPropertyWithValue(Comment.Fields.username, expected.getUsername())
+                .hasFieldOrPropertyWithValue(Comment.Fields.text, expected.getText())
+                .hasFieldOrPropertyWithValue(Comment.Fields.time, expected.getTime());
+    }
 
     @Test
     void findByIdShouldThrowEntityNotFoundExceptionWhenCommentNotFound() {
