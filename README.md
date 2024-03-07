@@ -1,6 +1,8 @@
 # comments-service
 
-Данный микросервис работает с комментариями
+Данный микросервис работает с комментариями.
+
+Является частью [этого проекта](https://github.com/vitmvit/core-service/tree/dev)
 
 ## Swagger
 
