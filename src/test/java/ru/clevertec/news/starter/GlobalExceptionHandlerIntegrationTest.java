@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import ru.clevertec.news.dto.page.PageParamDto;
 import ru.clevertec.news.exception.EmptyListException;
 import ru.clevertec.news.exception.EntityNotFoundException;
 import ru.clevertec.news.service.CommentService;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandlerIntegrationTest {
 
     @Test
     public void testHandleEntityNotFoundException() throws Exception {
-        Long id = 1L;
+        var id = 1L;
 
         when(commentService.findById(id)).thenThrow(new EntityNotFoundException());
 
@@ -38,11 +39,12 @@ public class GlobalExceptionHandlerIntegrationTest {
 
     @Test
     public void testHandleEmptyListException() throws Exception {
-        Long id = 1L;
+        var id = 1L;
+        var pageParamDto = new PageParamDto(OFFSET, LIMIT);
 
-        when(commentService.findByNewsId(OFFSET, LIMIT, id)).thenThrow(new EmptyListException());
+        when(commentService.findByNewsId(pageParamDto, id)).thenThrow(new EmptyListException());
 
-        mockMvc.perform(get("/api/comments/" + id, "?limit=" + LIMIT + "&offset=" + OFFSET))
+        mockMvc.perform(get("/api/comments/" + id, "?pageNumber=" + LIMIT + "&pageSize=" + OFFSET))
                 .andExpect(MvcResult::getResolvedException).getClass().equals(EmptyListException.class);
     }
 }

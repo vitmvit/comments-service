@@ -11,14 +11,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * Модель комментария
- */
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldNameConstants
 public class Comment implements Serializable {
 
@@ -26,6 +23,7 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long newsId;
 
     @CreationTimestamp
@@ -35,5 +33,6 @@ public class Comment implements Serializable {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String text;
 }

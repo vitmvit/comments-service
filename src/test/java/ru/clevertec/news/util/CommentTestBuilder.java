@@ -49,16 +49,4 @@ public class CommentTestBuilder {
     public Long getId() {
         return id;
     }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getToken() {
-        return "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTVUJTQ1JJQkVSIiwidXNlcm5hbWUiOiJTVUJTQ1JJQkVSIiwicm9sZSI6IlNVQlNDUklCRVIiLCJleHAiOjE3MDkxNzU1NTV9.uuZclt5mJniONm3Ax_8zAElwOgzk-QqQtoXgMQqPiXo";
-    }
 }

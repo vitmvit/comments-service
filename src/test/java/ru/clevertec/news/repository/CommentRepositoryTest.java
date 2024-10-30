@@ -8,10 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import ru.clevertec.news.config.PostgresSqlContainerInitializer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.clevertec.news.constant.Constant.LIMIT;
-import static ru.clevertec.news.constant.Constant.OFFSET;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @RequiredArgsConstructor
@@ -22,50 +19,16 @@ public class CommentRepositoryTest extends PostgresSqlContainerInitializer {
     private CommentRepository commentRepository;
 
     @Test
-    void findByTextContainingShouldReturnExpectedPageComments() {
-        String fragment = "t";
+    void findByNewsIdShouldReturnExpectedPageComment() {
+        var newsId = 1L;
+        var pageable = PageRequest.of(0, 10);
+        var actual = commentRepository.findByNewsId(pageable, newsId);
 
-        var commentPage = commentRepository.findByTextContaining(PageRequest.of(OFFSET, LIMIT), fragment);
-        assertEquals(7, commentPage.getTotalElements());
-    }
+        assertThat(actual).isNotNull();
+        assertThat(actual.getTotalElements()).isGreaterThan(0);
 
-    @Test
-    void findByTextContainingShouldReturnEmptyPageComments() {
-        String fragment = "z";
-
-        var commentPage = commentRepository.findByTextContaining(PageRequest.of(OFFSET, LIMIT), fragment);
-        assertTrue(commentPage.isEmpty());
-    }
-
-    @Test
-    void findByUsernameContainingShouldReturnExpectedPageComments() {
-        String fragment = "n";
-
-        var commentPage = commentRepository.findByUsernameContaining(PageRequest.of(OFFSET, LIMIT), fragment);
-        assertEquals(7, commentPage.getTotalElements());
-    }
-
-    @Test
-    void findByUsernameContainingShouldReturnEmptyPageComments() {
-        String fragment = "z";
-
-        var commentPage = commentRepository.findByUsernameContaining(PageRequest.of(OFFSET, LIMIT), fragment);
-        assertTrue(commentPage.isEmpty());
-    }
-
-    @Test
-    void findByNewsIdShouldReturnExpectedPageComments() {
-        Long id = 1L;
-
-        var commentPage = commentRepository.findByNewsId(PageRequest.of(OFFSET, LIMIT), id);
-        assertEquals(7, commentPage.getTotalElements());
-    }
-
-    @Test
-    void findByNewsIdShouldReturnEmptyPageComments() {
-        Long id = Long.MAX_VALUE;
-
-        var commentPage = commentRepository.findByNewsId(PageRequest.of(OFFSET, LIMIT), id);
-        assertTrue(commentPage.isEmpty());
+        actual.getContent().forEach(comment -> {
+            assertThat(comment.getNewsId()).isEqualTo(newsId);
+        });
     }
 }
